@@ -46,8 +46,9 @@ public class LearnFilter extends ZuulFilter {
             ctx.setResponseStatusCode(401);
             try {
                 ctx.getResponse().getWriter().write("token is empty");
-            }catch (Exception e){}
-
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return null;
         }
         log.info("ok");
