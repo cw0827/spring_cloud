@@ -1,0 +1,29 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: ribbon_test
+        uri: lb://service-ribbon
+        predicates:
+        - Path=/api-a/**
+        filters:
+        - RewritePath=/api-a/(?<segment>.*), /$\{segment}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
