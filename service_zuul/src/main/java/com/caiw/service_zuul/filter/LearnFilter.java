@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 /**
  * @ClassName LearnFilter
@@ -39,8 +40,21 @@ public class LearnFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
+        Enumeration<String> parameterNames = request.getParameterNames();
+        System.out.println("request.getAuthType() = " + request.getAuthType());
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        while (parameterNames.hasMoreElements()){
+            String s = parameterNames.nextElement();
+            log.info(s +"\t>>>\t" +request.getParameter(s));
+        }
+        log.info("---------------------------------------------------------------------");
+        while (headerNames.hasMoreElements()){
+            String s = headerNames.nextElement();
+            log.info(s +"\t>>>\t" +request.getParameter(s));
+        }
         Object accessToken = request.getParameter("token");
-        if(accessToken == null) {
+        /*if(accessToken == null) {
             log.warn("token is empty");
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
@@ -50,7 +64,7 @@ public class LearnFilter extends ZuulFilter {
                 e.printStackTrace();
             }
             return null;
-        }
+        }*/
         log.info("ok");
         return null;
     }
